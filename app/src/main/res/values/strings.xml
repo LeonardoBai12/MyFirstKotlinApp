@@ -1,5 +1,3 @@
 <resources>
-    <string name="app_name">TOPi Meals</string>
-    <string name="ingredientstText">INGREDIENTS</string>
-    <string name="instructionstText">INSTRUCTIONS</string>
+    <string name="app_name">TopiMealsKotlin</string>
 </resources>
