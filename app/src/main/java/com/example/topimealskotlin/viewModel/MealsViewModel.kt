@@ -21,14 +21,12 @@ class MealsViewModel : ViewModel() {
     fun loadMealsList(appContext: Context): MutableLiveData<List<Meal>> {
         var mealList: MutableLiveData<List<Meal>> = MutableLiveData<List<Meal>>()
 
-        val service: MealApiService = RetrofitClientInstance().getRetrofitInstance()
-            .create(MealApiService::class.java)
+        val service: MealApiService = RetrofitClientInstance().getRetrofitInstance().create(MealApiService::class.java)
         val call: Call<EnvelopeMeal> = service.getMeals(FILTER)
         call.enqueue(object : Callback<EnvelopeMeal> {
             override fun onResponse(call: Call<EnvelopeMeal>, response: Response<EnvelopeMeal>) {
                 mealList.value = response.body()?.getMealList()
             }
-
             override fun onFailure(call: Call<EnvelopeMeal>, t: Throwable) {
                 Toast.makeText(appContext, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show()
             }

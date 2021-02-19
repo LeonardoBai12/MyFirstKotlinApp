@@ -1,8 +1,6 @@
 package com.example.topimealskotlin
 
-import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.Log
+import android.app.ProgressDialog
 import android.view.MenuItem
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -11,24 +9,34 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.example.topimealskotlin.adapter.MealsAdapter
 import com.example.topimealskotlin.model.Meal
 import com.example.topimealskotlin.viewModel.MealsViewModel
+import org.androidannotations.annotations.*
 
-class MainActivity : AppCompatActivity()  {
+@EActivity(R.layout.activity_main)
+@OptionsMenu(R.menu.meals_menu)
+open class MainActivity : AppCompatActivity()  {
 
     private lateinit var adapter : MealsAdapter
     private lateinit var viewModel : MealsViewModel
-    private lateinit var recyclerView : RecyclerView
-    //val swipeContainer = findViewById<SwipeRefreshLayout>(R.id.swipeContainer)
-    //val searchItem = findViewById<MenuItem>(R.id.action_search)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    @ViewById(R.id.recyclerView)
+    lateinit var recyclerView : RecyclerView
+
+    @ViewById(R.id.swipeContainer)
+    lateinit var swipeContainer : SwipeRefreshLayout
+
+    @OptionsMenuItem(R.id.action_search)
+    lateinit var searchItem : MenuItem
+
+    @AfterViews
+    fun afterViews() {
         createAdapter()
         createRecyclerView()
         setupViewModel()
+        createRecyclerViewSwipe()
     }
 
     fun createAdapter() {
@@ -37,7 +45,6 @@ class MainActivity : AppCompatActivity()  {
 
     fun createRecyclerView(){
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
-        recyclerView = findViewById(R.id.recyclerView)
         recyclerView.setLayoutManager(layoutManager)
         recyclerView.setHasFixedSize(true)
         recyclerView.addItemDecoration(DividerItemDecoration(applicationContext, LinearLayout.VERTICAL))
@@ -46,11 +53,18 @@ class MainActivity : AppCompatActivity()  {
 
     fun setupViewModel(){
         viewModel = ViewModelProvider(this)[MealsViewModel::class.java]
-        viewModel.loadMealsList(this).observe(this,this::updateList)
+        viewModel.loadMealsList(this).observe(this, this::updateList)
     }
 
-    fun updateList(mealList : List<Meal>){
+    fun updateList(mealList: List<Meal>){
         adapter.updateList(mealList)
+    }
+
+    fun createRecyclerViewSwipe() {
+        swipeContainer.setOnRefreshListener(OnRefreshListener {
+            viewModel.loadMealsList(applicationContext)
+            swipeContainer.setRefreshing(false)
+        })
     }
 
 }
