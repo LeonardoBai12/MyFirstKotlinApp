@@ -2,8 +2,9 @@ package com.example.topimealskotlin.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-class Meal() {
+class Meal() : Serializable {
 
     @SerializedName("idMeal")
     @Expose
@@ -107,6 +108,6 @@ class Meal() {
 
     @SerializedName("strIngredient20")
     @Expose
-    private lateinit var strIngredient20: String
+    lateinit var strIngredient20: String
 
 }
