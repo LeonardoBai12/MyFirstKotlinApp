@@ -1,9 +1,12 @@
 package com.example.topimealskotlin
 
-import android.app.ProgressDialog
+import android.app.SearchManager
+import android.graphics.PorterDuff
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +19,6 @@ import com.example.topimealskotlin.viewModel.MealsViewModel
 import org.androidannotations.annotations.*
 
 @EActivity(R.layout.activity_main)
-@OptionsMenu(R.menu.meals_menu)
 open class MainActivity : AppCompatActivity()  {
 
     private lateinit var adapter : MealsAdapter
@@ -27,9 +29,6 @@ open class MainActivity : AppCompatActivity()  {
 
     @ViewById(R.id.swipeContainer)
     lateinit var swipeContainer : SwipeRefreshLayout
-
-    @OptionsMenuItem(R.id.action_search)
-    lateinit var searchItem : MenuItem
 
     @AfterViews
     fun afterViews() {
@@ -65,6 +64,35 @@ open class MainActivity : AppCompatActivity()  {
             viewModel.loadMealsList(applicationContext)
             swipeContainer.setRefreshing(false)
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.meals_menu, menu)
+
+        val drawable = menu.getItem(0).icon
+        drawable.mutate()
+
+        val searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
+        val search = menu.findItem(R.id.action_search)
+        val searchView = search.actionView as SearchView
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.setIconifiedByDefault(false)
+
+        val textChangeListener: SearchView.OnQueryTextListener = object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(query: String): Boolean {
+                adapter.getFilter().filter(query)
+                return true
+            }
+
+            override fun onQueryTextSubmit(query: String): Boolean {
+                adapter.getFilter().filter(query)
+                return true
+            }
+        }
+        searchView.setOnQueryTextListener(textChangeListener)
+
+        return super.onCreateOptionsMenu(menu)
     }
 
 }

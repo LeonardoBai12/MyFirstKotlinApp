@@ -1,10 +1,9 @@
 package com.example.topimealskotlin.adapter
 
-import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +20,7 @@ import java.util.*
 
 class MealsAdapter : RecyclerView.Adapter<MealsAdapter.MyViewHolder>() {
 
-    private lateinit var mealsListFull: List<Meal>
+    private var mealsListFull = emptyList<Meal>()
     private var mealsList = emptyList<Meal>()
     private val requestOptions = RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
 
@@ -52,7 +51,45 @@ class MealsAdapter : RecyclerView.Adapter<MealsAdapter.MyViewHolder>() {
 
     fun updateList(mealsList: List<Meal>){
         this.mealsList = mealsList
+        this.mealsListFull = mealsList
         notifyDataSetChanged()
+    }
+
+    fun getFilter(): Filter {
+
+        val filter : Filter
+
+        filter = object : Filter(){
+            override fun performFiltering(filter: CharSequence): FilterResults {
+                var filter: CharSequence = filter
+                val results = FilterResults()
+                if (filter.length == 0) {
+                    results.count = mealsListFull.size
+                    results.values = mealsListFull
+                } else {
+                    val filteredItems: MutableList<Meal> = ArrayList<Meal>()
+                    for (i in mealsListFull.indices) {
+                        val data: Meal = mealsListFull.get(i)
+                        filter = filter.toString().toLowerCase(Locale.ROOT)
+                        val name = data.strMeal.toLowerCase(Locale.ROOT)
+                        val area = data.strArea.toLowerCase(Locale.ROOT)
+                        if (name.contains(filter) || area.contains(filter)) {
+                            filteredItems.add(data)
+                        }
+                    }
+                    results.count = filteredItems.size
+                    results.values = filteredItems
+                }
+                return results
+            }
+
+            override fun publishResults(constraint: CharSequence, results: FilterResults) {
+                mealsList = results.values as List<Meal>
+                notifyDataSetChanged()
+            }
+
+        }
+        return filter
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

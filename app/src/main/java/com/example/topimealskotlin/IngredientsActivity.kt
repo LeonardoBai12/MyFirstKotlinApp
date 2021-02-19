@@ -37,12 +37,19 @@ open class IngredientsActivity : AppCompatActivity() {
 
     @AfterViews
     fun afterViews(){
+        setupViews()
+        setupAdapterAndList()
+    }
+
+    private fun setupAdapterAndList() {
+        adapter = IngredientsAdapter().Adapter(applicationContext,meal)
+        ingredientsListView.adapter = adapter
+    }
+
+    fun setupViews(){
         strMeal.text = meal.strMeal
         strArea.text = meal.strArea
         strInstructions.text = meal.strInstructions
-        adapter = IngredientsAdapter().Adapter(applicationContext,meal)
-        ingredientsListView.adapter = adapter
-        //TODO CLEAN CODE
     }
 
     companion object {
