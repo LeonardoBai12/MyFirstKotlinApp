@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.topimealskotlin.model.EnvelopeMeal
 import com.example.topimealskotlin.model.Meal
-import com.example.topimealskotlin.network.MealApiService
+import com.example.topimealskotlin.network.MealRepository
 import com.example.topimealskotlin.network.RetrofitClientInstance
 import retrofit2.Call
 import retrofit2.Callback
@@ -19,10 +19,9 @@ class MealsViewModel : ViewModel() {
     private val FILTER = "Chicken"
 
     fun loadMealsList(appContext: Context): MutableLiveData<List<Meal>> {
-        var mealList: MutableLiveData<List<Meal>> = MutableLiveData<List<Meal>>()
-
-        val service: MealApiService = RetrofitClientInstance().getRetrofitInstance().create(MealApiService::class.java)
-        val call: Call<EnvelopeMeal> = service.getMeals(FILTER)
+        val mealList = MutableLiveData<List<Meal>>()
+        val repository = RetrofitClientInstance().getRetrofitInstance().create(MealRepository::class.java)
+        val call = repository.getMeals(FILTER)
         call.enqueue(object : Callback<EnvelopeMeal> {
             override fun onResponse(call: Call<EnvelopeMeal>, response: Response<EnvelopeMeal>) {
                 mealList.value = response.body()?.getMealList()

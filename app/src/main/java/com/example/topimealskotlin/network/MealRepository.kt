@@ -5,7 +5,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface MealApiService {
+interface MealRepository {
     @GET("api/json/v1/1/search.php")
     fun getMeals(@Query("s") filter: String): Call<EnvelopeMeal>
 }

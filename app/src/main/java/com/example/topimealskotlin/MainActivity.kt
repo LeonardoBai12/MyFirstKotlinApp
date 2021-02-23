@@ -43,7 +43,7 @@ open class MainActivity : AppCompatActivity()  {
     }
 
     fun createRecyclerView(){
-        val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
+        val layoutManager = LinearLayoutManager(applicationContext)
         recyclerView.setLayoutManager(layoutManager)
         recyclerView.setHasFixedSize(true)
         recyclerView.addItemDecoration(DividerItemDecoration(applicationContext, LinearLayout.VERTICAL))

@@ -25,7 +25,7 @@ class MealsAdapter : RecyclerView.Adapter<MealsAdapter.MyViewHolder>() {
     private val requestOptions = RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val item: View = LayoutInflater.from(parent.context)
+        val item = LayoutInflater.from(parent.context)
             .inflate(R.layout.row_meal, parent, false)
         return MyViewHolder(item)
     }
