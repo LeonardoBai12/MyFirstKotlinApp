@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName
 
 class EnvelopeMeal {
     @SerializedName("meals")
-    @Expose
     private lateinit var mealList: List<Meal>
 
     fun getMealList(): List<Meal> {

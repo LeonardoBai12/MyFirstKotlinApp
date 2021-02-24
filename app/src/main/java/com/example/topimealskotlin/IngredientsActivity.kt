@@ -42,7 +42,7 @@ open class IngredientsActivity : AppCompatActivity() {
     }
 
     private fun setupAdapterAndList() {
-        adapter = IngredientsAdapter().Adapter(applicationContext,meal)
+        adapter = IngredientsAdapter().Adapter(applicationContext, meal)
         ingredientsListView.adapter = adapter
     }
 
