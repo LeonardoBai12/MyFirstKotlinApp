@@ -1,9 +1,8 @@
 package com.example.topimealskotlin
 
 import android.app.SearchManager
-import android.graphics.PorterDuff
+import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -16,26 +15,29 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.example.topimealskotlin.adapter.MealsAdapter
 import com.example.topimealskotlin.model.Meal
 import com.example.topimealskotlin.viewModel.MealsViewModel
-import org.androidannotations.annotations.*
 
-@EActivity(R.layout.activity_main)
 open class MainActivity : AppCompatActivity()  {
 
     private lateinit var adapter : MealsAdapter
     private lateinit var viewModel : MealsViewModel
 
-    @ViewById(R.id.recyclerView)
     lateinit var recyclerView : RecyclerView
-
-    @ViewById(R.id.swipeContainer)
     lateinit var swipeContainer : SwipeRefreshLayout
 
-    @AfterViews
-    fun afterViews() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        initializaVariables()
         createAdapter()
         createRecyclerView()
         setupViewModel()
         createRecyclerViewSwipe()
+    }
+
+    private fun initializaVariables() {
+        swipeContainer = findViewById(R.id.swipeContainer)
+        recyclerView = findViewById(R.id.recyclerView)
     }
 
     fun createAdapter() {

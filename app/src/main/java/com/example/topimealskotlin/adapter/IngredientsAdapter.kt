@@ -17,8 +17,8 @@ class IngredientsAdapter {
         return ArrayAdapter(appContext, R.layout.simple_list_item_1, R.id.text1, ingredientsList )
     }
 
-    fun addIfNotEmpty(arrayList: ArrayList<String>, string: String) {
-        if (!string.trim { it <= ' ' }.isEmpty()) {
+    fun addIfNotEmpty(arrayList: ArrayList<String>, string: String?) {
+        if ((string != null) && string.trim { it <= ' ' }.isNotEmpty()) {
             arrayList.add(string)
         }
     }

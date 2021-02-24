@@ -8,37 +8,32 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.topimealskotlin.adapter.IngredientsAdapter
-import com.example.topimealskotlin.adapter.MealsAdapter
 import com.example.topimealskotlin.model.Meal
-import org.androidannotations.annotations.AfterViews
-import org.androidannotations.annotations.EActivity
-import org.androidannotations.annotations.Extra
-import org.androidannotations.annotations.ViewById
 
-@EActivity(R.layout.activity_ingredients)
 open class IngredientsActivity : AppCompatActivity() {
 
     lateinit var adapter : ArrayAdapter<String>
 
-    @Extra(Companion.MEAL)
     lateinit var meal : Meal
-
-    @ViewById(R.id.strAreaView)
     lateinit var strArea : TextView
-
-    @ViewById(R.id.strInstructionsView)
     lateinit var strInstructions : TextView
-
-    @ViewById(R.id.strMealView)
     lateinit var strMeal : TextView
-
-    @ViewById(R.id.ingredientsListView)
     lateinit var ingredientsListView : ListView
 
-    @AfterViews
-    fun afterViews(){
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_ingredients)
+        initialeVariables()
         setupViews()
         setupAdapterAndList()
+    }
+
+    private fun initialeVariables() {
+        meal = intent.getSerializableExtra(Companion.MEAL) as Meal
+        strArea = findViewById(R.id.strAreaView)
+        strInstructions = findViewById(R.id.strInstructionsView)
+        strMeal = findViewById(R.id.strMealView)
+        ingredientsListView = findViewById(R.id.ingredientsListView)
     }
 
     private fun setupAdapterAndList() {
@@ -54,7 +49,7 @@ open class IngredientsActivity : AppCompatActivity() {
 
     companion object {
         fun startActivity(meal: Meal, context: Context) {
-            val intent = Intent(context, IngredientsActivity_::class.java)
+            val intent = Intent(context, IngredientsActivity::class.java)
             val bundle = Bundle()
             bundle.putSerializable(MEAL, meal)
             intent.putExtras(bundle)
