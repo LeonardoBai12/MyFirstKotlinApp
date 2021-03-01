@@ -1,8 +1,8 @@
-package com.example.topimealskotlin.network
+package com.example.topimealskotlin.network.meal
 
-import com.example.topimealskotlin.model.EnvelopeMeal
-import com.example.topimealskotlin.model.Meal
-import retrofit2.Call
+import com.example.topimealskotlin.model.meal.EnvelopeMeal
+import com.example.topimealskotlin.model.meal.MealConstants
+import com.google.gson.annotations.SerializedName
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

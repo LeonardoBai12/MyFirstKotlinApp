@@ -1,4 +1,4 @@
-package com.example.topimealskotlin.model
+package com.example.topimealskotlin.model.meal
 
 class MealConstants {
     companion object {

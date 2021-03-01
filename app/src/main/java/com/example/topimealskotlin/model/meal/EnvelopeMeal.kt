@@ -1,6 +1,5 @@
-package com.example.topimealskotlin.model
+package com.example.topimealskotlin.model.meal
 
-import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 class EnvelopeMeal {

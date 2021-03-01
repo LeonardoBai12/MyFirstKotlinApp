@@ -1,4 +1,4 @@
-package com.example.topimealskotlin.adapter
+package com.example.topimealskotlin.ui.meal
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +12,9 @@ import butterknife.ButterKnife
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.example.topimealskotlin.IngredientsActivity
+import com.example.topimealskotlin.ui.ingredients.IngredientsActivity
 import com.example.topimealskotlin.R
-import com.example.topimealskotlin.model.Meal
+import com.example.topimealskotlin.model.meal.Meal
 import java.util.*
 
 

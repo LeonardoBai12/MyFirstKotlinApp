@@ -1,9 +1,9 @@
-package com.example.topimealskotlin.adapter
+package com.example.topimealskotlin.ui.ingredients
 
 import android.R
 import android.content.Context
 import android.widget.ArrayAdapter
-import com.example.topimealskotlin.model.Meal
+import com.example.topimealskotlin.model.meal.Meal
 import kotlin.collections.ArrayList
 
 class IngredientsAdapter {

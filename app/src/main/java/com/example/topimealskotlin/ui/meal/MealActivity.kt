@@ -1,9 +1,11 @@
-package com.example.topimealskotlin
+package com.example.topimealskotlin.ui.meal
 
 import android.app.SearchManager
 import android.os.Bundle
 import android.view.Menu
 import android.widget.LinearLayout
+import androidx.activity.viewModels
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
@@ -12,14 +14,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
-import com.example.topimealskotlin.adapter.MealsAdapter
-import com.example.topimealskotlin.model.Meal
-import com.example.topimealskotlin.viewModel.MealsViewModel
+import com.example.topimealskotlin.R
+import com.example.topimealskotlin.model.meal.Meal
+import dagger.android.HasAndroidInjector
+import dagger.android.support.DaggerAppCompatActivity
+import javax.inject.Inject
 
-open class MainActivity : AppCompatActivity()  {
+class MealActivity : DaggerAppCompatActivity() {
 
     private lateinit var adapter : MealsAdapter
-    private lateinit var viewModel : MealsViewModel
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val mealsViewModel: MealsViewModel by viewModels {
+        viewModelFactory
+    }
 
     lateinit var recyclerView : RecyclerView
     lateinit var swipeContainer : SwipeRefreshLayout
@@ -53,8 +63,7 @@ open class MainActivity : AppCompatActivity()  {
     }
 
     fun setupViewModel(){
-        viewModel = ViewModelProvider(this)[MealsViewModel::class.java]
-        viewModel.loadMealsList(this).observe(this, this::updateList)
+        mealsViewModel.loadMealsList().observe(this, this::updateList)
     }
 
     fun updateList(mealList: List<Meal>){
@@ -63,7 +72,7 @@ open class MainActivity : AppCompatActivity()  {
 
     fun createRecyclerViewSwipe() {
         swipeContainer.setOnRefreshListener(OnRefreshListener {
-            viewModel.loadMealsList(applicationContext)
+            mealsViewModel.loadMealsList()
             swipeContainer.setRefreshing(false)
         })
     }

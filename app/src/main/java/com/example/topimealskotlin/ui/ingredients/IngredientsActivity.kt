@@ -1,4 +1,4 @@
-package com.example.topimealskotlin
+package com.example.topimealskotlin.ui.ingredients
 
 import android.content.Context
 import android.content.Intent
@@ -7,10 +7,12 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.topimealskotlin.adapter.IngredientsAdapter
-import com.example.topimealskotlin.model.Meal
+import com.example.topimealskotlin.R
+import com.example.topimealskotlin.model.meal.Meal
+import dagger.android.HasAndroidInjector
+import dagger.android.support.DaggerAppCompatActivity
 
-open class IngredientsActivity : AppCompatActivity() {
+class IngredientsActivity : AppCompatActivity() {
 
     lateinit var adapter : ArrayAdapter<String>
 
@@ -29,7 +31,7 @@ open class IngredientsActivity : AppCompatActivity() {
     }
 
     private fun initialeVariables() {
-        meal = intent.getSerializableExtra(Companion.MEAL) as Meal
+        meal = intent.getSerializableExtra(MEAL) as Meal
         strArea = findViewById(R.id.strAreaView)
         strInstructions = findViewById(R.id.strInstructionsView)
         strMeal = findViewById(R.id.strMealView)
