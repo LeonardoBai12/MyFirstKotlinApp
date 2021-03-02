@@ -1,12 +1,14 @@
 package com.example.topimealskotlin.ui.meal
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.app.SearchManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.widget.LinearLayout
 import androidx.activity.viewModels
-
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -16,13 +18,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.example.topimealskotlin.R
 import com.example.topimealskotlin.model.meal.Meal
-import dagger.android.HasAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
+
 
 class MealActivity : DaggerAppCompatActivity() {
 
     private lateinit var adapter : MealsAdapter
+    private lateinit var builder: AlertDialog.Builder
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -33,16 +36,26 @@ class MealActivity : DaggerAppCompatActivity() {
 
     lateinit var recyclerView : RecyclerView
     lateinit var swipeContainer : SwipeRefreshLayout
+    lateinit var dialog: Dialog
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_meal)
 
+        createProgressDialog()
         initializaVariables()
         createAdapter()
         createRecyclerView()
         setupViewModel()
         createRecyclerViewSwipe()
+    }
+
+    private fun createProgressDialog(){
+        builder = AlertDialog.Builder(this)
+        builder.setCancelable(false)
+        builder.setView(R.layout.progress)
+        dialog = builder.create()
     }
 
     private fun initializaVariables() {
@@ -63,17 +76,21 @@ class MealActivity : DaggerAppCompatActivity() {
     }
 
     fun setupViewModel(){
-        mealsViewModel.loadMealsList().observe(this, this::updateList)
+        mealsViewModel.loadMealsList(dialog).observe(this, this::updateList)
     }
 
     fun updateList(mealList: List<Meal>){
         adapter.updateList(mealList)
+        Handler(Looper.getMainLooper()).postDelayed({
+            dialog.dismiss()
+        }, 750)
     }
 
     fun createRecyclerViewSwipe() {
         swipeContainer.setOnRefreshListener(OnRefreshListener {
-            mealsViewModel.loadMealsList()
+            mealsViewModel.loadMealsList(dialog)
             swipeContainer.setRefreshing(false)
+            dialog.dismiss()
         })
     }
 

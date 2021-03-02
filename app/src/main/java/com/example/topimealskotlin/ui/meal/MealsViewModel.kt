@@ -1,5 +1,6 @@
 package com.example.topimealskotlin.ui.meal
 
+import android.app.Dialog
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,8 +18,10 @@ import javax.inject.Inject
 class MealsViewModel @Inject constructor( private val retrofit: Retrofit,
                                           private val repository: MealRepository) : ViewModel() {
 
-    fun loadMealsList(): MutableLiveData<List<Meal>> {
+    fun loadMealsList(dialog: Dialog): MutableLiveData<List<Meal>> {
         val mealList = MutableLiveData<List<Meal>>()
+
+        dialog.show()
 
         CoroutineScope(IO).launch {
             val res = repository.getMeals(MealConstants.FILTER)
