@@ -12,20 +12,23 @@ import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.topimealskotlin.ui.ingredients.IngredientsActivity
 import com.example.topimealskotlin.R
 import com.example.topimealskotlin.model.meal.Meal
+import dagger.BindsInstance
 import java.util.*
 import javax.inject.Inject
 
 
-class MealsAdapter : RecyclerView.Adapter<MealsAdapter.ViewHolder>() {
+class MealsAdapter @Inject constructor(
+        private val requestOptions: RequestOptions,
+        private val glideInstance: RequestManager) : RecyclerView.Adapter<MealsAdapter.ViewHolder>() {
 
     private var mealsListFull = emptyList<Meal>()
     private var mealsList = emptyList<Meal>()
-    private val requestOptions = RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val item = LayoutInflater.from(parent.context)
@@ -44,7 +47,8 @@ class MealsAdapter : RecyclerView.Adapter<MealsAdapter.ViewHolder>() {
             IngredientsActivity.startActivity(meal, holder.itemView.context)
         }
 
-        Glide.with(holder.itemView.context).load(meal.strMealThumb).centerCrop()
+
+        glideInstance.load(meal.strMealThumb).centerCrop()
             .apply(requestOptions).into(holder.strMealThumb)
 
     }

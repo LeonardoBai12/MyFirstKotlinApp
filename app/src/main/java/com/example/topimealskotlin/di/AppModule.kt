@@ -17,10 +17,23 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideRetrofitInstance() : Retrofit {
+    fun providesRetrofitInstance() : Retrofit {
         return Retrofit.Builder().baseUrl(MealConstants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
+    }
+
+    @Singleton
+    @Provides
+    fun providesRequestOptions() : RequestOptions{
+        return RequestOptions().placeholder(R.drawable.white_background)
+                .error(R.drawable.white_background);
+    }
+
+    @Singleton
+    @Provides
+    fun providesGlideInstance(application: Application, requestOptions: RequestOptions) : RequestManager{
+        return Glide.with(application).setDefaultRequestOptions(requestOptions)
     }
 
 }

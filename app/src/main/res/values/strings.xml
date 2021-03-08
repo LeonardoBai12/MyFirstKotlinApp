@@ -2,4 +2,5 @@
     <string name="app_name">TOPi Meals Kotlin</string>
     <string name="ingredientstText">INGREDIENTS</string>
     <string name="instructionstText">INSTRUCTIONS</string>
+    <string name="illustration">Illustration</string>
 </resources>
