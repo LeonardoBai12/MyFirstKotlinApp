@@ -15,8 +15,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import javax.inject.Inject
 
-class MealsViewModel @Inject constructor( private val retrofit: Retrofit,
-                                          private val repository: MealRepository) : ViewModel() {
+class MealsViewModel @Inject constructor( private val repository: MealRepository) : ViewModel() {
 
     fun loadMealsList(dialog: Dialog): MutableLiveData<List<Meal>> {
         val mealList = MutableLiveData<List<Meal>>()
@@ -26,10 +25,11 @@ class MealsViewModel @Inject constructor( private val retrofit: Retrofit,
         CoroutineScope(IO).launch {
             val res = repository.getMeals(MealConstants.FILTER)
 
-            if(res.isSuccessful)
-                withContext(Dispatchers.Main){
+            if(res.isSuccessful) {
+                withContext(Dispatchers.Main) {
                     mealList.value = res.body()?.getMealList()
                 }
+            }
 
         }
         return mealList

@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -16,21 +18,23 @@ import com.example.topimealskotlin.ui.ingredients.IngredientsActivity
 import com.example.topimealskotlin.R
 import com.example.topimealskotlin.model.meal.Meal
 import java.util.*
+import javax.inject.Inject
 
 
-class MealsAdapter : RecyclerView.Adapter<MealsAdapter.MyViewHolder>() {
+class MealsAdapter : RecyclerView.Adapter<MealsAdapter.ViewHolder>() {
 
     private var mealsListFull = emptyList<Meal>()
     private var mealsList = emptyList<Meal>()
     private val requestOptions = RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val item = LayoutInflater.from(parent.context)
             .inflate(R.layout.row_meal, parent, false)
-        return MyViewHolder(item)
+
+        return ViewHolder(item)
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val meal = mealsList[position]
 
         holder.strMeal.text = meal.strMeal
@@ -92,19 +96,10 @@ class MealsAdapter : RecyclerView.Adapter<MealsAdapter.MyViewHolder>() {
         return filter
     }
 
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        @BindView(R.id.strMeal)
-        lateinit var strMeal: TextView
-
-        @BindView(R.id.strArea)
-        lateinit var strArea: TextView
-
-        @BindView(R.id.strMealThumb)
-        lateinit var strMealThumb : ImageView
-
-        init {
-            ButterKnife.bind(this, itemView)
-        }
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val strMeal : TextView = itemView.findViewById(R.id.strMeal)
+        val strArea : TextView = itemView.findViewById(R.id.strArea)
+        val strMealThumb : ImageView = itemView.findViewById(R.id.strMealThumb)
     }
 
 }

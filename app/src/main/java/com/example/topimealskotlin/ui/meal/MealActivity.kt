@@ -24,8 +24,8 @@ import javax.inject.Inject
 
 class MealActivity : DaggerAppCompatActivity() {
 
-    private lateinit var adapter : MealsAdapter
-    private lateinit var builder: AlertDialog.Builder
+    @Inject
+    lateinit var adapter : MealsAdapter
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -34,10 +34,10 @@ class MealActivity : DaggerAppCompatActivity() {
         viewModelFactory
     }
 
-    lateinit var recyclerView : RecyclerView
-    lateinit var swipeContainer : SwipeRefreshLayout
-    lateinit var dialog: Dialog
-
+    private lateinit var builder: AlertDialog.Builder
+    private lateinit var recyclerView : RecyclerView
+    private lateinit var swipeContainer : SwipeRefreshLayout
+    private lateinit var dialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +45,6 @@ class MealActivity : DaggerAppCompatActivity() {
 
         createProgressDialog()
         initializaVariables()
-        createAdapter()
         createRecyclerView()
         setupViewModel()
         createRecyclerViewSwipe()
@@ -61,10 +60,6 @@ class MealActivity : DaggerAppCompatActivity() {
     private fun initializaVariables() {
         swipeContainer = findViewById(R.id.swipeContainer)
         recyclerView = findViewById(R.id.recyclerView)
-    }
-
-    fun createAdapter() {
-        adapter = MealsAdapter()
     }
 
     fun createRecyclerView(){
